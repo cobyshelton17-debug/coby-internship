@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import EthImage from "../images/ethereum.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
 import nftImage from "../images/nftImage.jpg";
 
 const ItemDetails = () => {
+  const location = useLocation();
+  const collection = location.state?.collection;
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -18,14 +21,16 @@ const ItemDetails = () => {
             <div className="row">
               <div className="col-md-6 text-center">
                 <img
-                  src={nftImage}
+                  src={collection ? collection.nftImage : nftImage}
                   className="img-fluid img-rounded mb-sm-30 nft-image"
                   alt=""
                 />
               </div>
               <div className="col-md-6">
                 <div className="item_info">
-                  <h2>Rainbow Style #194</h2>
+                  <h2>
+                    {collection ? collection.title : "Rainbow Style #194"}
+                  </h2>
 
                   <div className="item_info_counts">
                     <div className="item_info_views">
@@ -48,7 +53,11 @@ const ItemDetails = () => {
                       <div className="item_author">
                         <div className="author_list_pp">
                           <Link to="/author">
-                            <img className="lazy" src={AuthorImage} alt="" />
+                            <img
+                              className="lazy"
+                              src={collection ? collection.authorImage : AuthorImage}
+                              alt=""
+                            />
                             <i className="fa fa-check"></i>
                           </Link>
                         </div>
@@ -65,7 +74,11 @@ const ItemDetails = () => {
                       <div className="item_author">
                         <div className="author_list_pp">
                           <Link to="/author">
-                            <img className="lazy" src={AuthorImage} alt="" />
+                            <img
+                              className="lazy"
+                              src={collection ? collection.authorImage : AuthorImage}
+                              alt=""
+                            />
                             <i className="fa fa-check"></i>
                           </Link>
                         </div>
