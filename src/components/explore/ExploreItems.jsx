@@ -1,27 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Countdown from "../UI/Countdown";
 import Skeleton from "../UI/Skeleton";
-
-const getRemaining = (expiryDate) => {
-  const diff = expiryDate - Date.now();
-  if (diff <= 0) return null;
-  const totalSeconds = Math.floor(diff / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  return { days, hours, minutes, seconds };
-};
-
-const renderCountdown = (expiryDate) => {
-  if (!expiryDate) return null;
-  const remaining = getRemaining(expiryDate);
-  if (!remaining) return null;
-  let label = `${remaining.hours}h ${remaining.minutes}m ${remaining.seconds}s`;
-  if (remaining.days > 0) label = `${remaining.days}d ${label}`;
-  return <div className="de_countdown">{label}</div>;
-};
 
 const PAGE_SIZE = 8;
 
@@ -114,7 +95,7 @@ const ExploreItems = () => {
                   <i className="fa fa-check"></i>
                 </Link>
               </div>
-              {renderCountdown(item.expiryDate)}
+              <Countdown expiryDate={item.expiryDate} />
 
               <div className="nft__item_wrap">
                 <div className="nft__item_extra">
@@ -169,7 +150,7 @@ const ExploreItems = () => {
           <button
             id="loadmore"
             className="btn-main lead"
-            onClick={() => setVisible((v) => v + PAGE_SIZE)}
+            onClick={() => setVisible((v) => v + 4)}
           >
             Load more
           </button>
