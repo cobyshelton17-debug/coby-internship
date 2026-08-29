@@ -5,6 +5,8 @@ import Countdown from "../UI/Countdown";
 import Skeleton from "../UI/Skeleton";
 
 const PAGE_SIZE = 8;
+const BASE_URL =
+  "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore";
 
 const ExploreItems = () => {
   const [items, setItems] = useState([]);
@@ -14,28 +16,27 @@ const ExploreItems = () => {
   const [visible, setVisible] = useState(PAGE_SIZE);
 
   useEffect(() => {
+    setLoading(true);
+    setError(false);
+    const url =
+      filter === "default"
+        ? BASE_URL
+        : `${BASE_URL}?filter=${encodeURIComponent(filter)}`;
     axios
-      .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/explore")
-      .then((res) => setItems(res.data))
+      .get(url)
+      .then((res) => {
+        setItems(res.data);
+        setVisible(PAGE_SIZE);
+      })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
-  }, []);
-
-  let sorted = [...items];
-  if (filter === "price_low_to_high") {
-    sorted.sort((a, b) => a.price - b.price);
-  } else if (filter === "price_high_to_low") {
-    sorted.sort((a, b) => b.price - a.price);
-  } else if (filter === "likes_high_to_low") {
-    sorted.sort((a, b) => b.likes - a.likes);
-  }
+  }, [filter]);
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
-    setVisible(PAGE_SIZE);
   };
 
-  const visibleItems = sorted.slice(0, visible);
+  const visibleItems = items.slice(0, visible);
 
   return (
     <>
@@ -145,7 +146,7 @@ const ExploreItems = () => {
           </div>
         ))}
 
-      {!loading && !error && visible < sorted.length && (
+      {!loading && !error && visible < items.length && (
         <div className="col-md-12 text-center">
           <button
             id="loadmore"
