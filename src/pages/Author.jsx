@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation, Link } from "react-router-dom";
+import axios from "axios";
 import AuthorBanner from "../images/author_banner.jpg";
-import AuthorItems from "../components/author/AuthorItems";
-import { Link } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
+import AuthorItems from "../components/author/AuthorItems";
+import Skeleton from "../components/UI/Skeleton";
 
 const Author = () => {
+  const { authorId } = useParams();
+  const location = useLocation();
+
+  const [author, setAuthor] = useState(null);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const id = authorId || location.state?.authorId;
+
+  useEffect(() => {
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+    Promise.all([
+      axios.get(
+        "https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers"
+      ),
+      axios.get(
+        "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems"
+      ),
+    ])
+      .then(([sellersRes, itemsRes]) => {
+        const sellers = sellersRes.data || [];
+        const allItems = itemsRes.data || [];
+        const found = sellers.find((s) => String(s.authorId) === String(id));
+        setAuthor(
+          found || { authorId: id, authorName: "Monica Lucas", authorImage: AuthorImage }
+        );
+        setItems(allItems.filter((i) => String(i.authorId) === String(id)));
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  const displayAuthor = author || {
+    authorName: "Monica Lucas",
+    authorImage: AuthorImage,
+  };
+
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
@@ -25,12 +68,27 @@ const Author = () => {
                 <div className="d_profile de-flex">
                   <div className="de-flex-col">
                     <div className="profile_avatar">
-                      <img src={AuthorImage} alt="" />
+                      {loading ? (
+                        <div
+                          className="skeleton-box"
+                          style={{ width: 150, height: 150, borderRadius: "50%" }}
+                        ></div>
+                      ) : (
+                        <img src={displayAuthor.authorImage} alt="" />
+                      )}
 
                       <i className="fa fa-check"></i>
                       <div className="profile_name">
                         <h4>
-                          Monica Lucas
+                          {loading ? (
+                            <Skeleton
+                              width="160px"
+                              height="24px"
+                              borderRadius="4px"
+                            />
+                          ) : (
+                            displayAuthor.authorName
+                          )}
                           <span className="profile_username">@monicaaaa</span>
                           <span id="wallet" className="profile_wallet">
                             UDHUHWudhwd78wdt7edb32uidbwyuidhg7wUHIFUHWewiqdj87dy7
@@ -55,7 +113,17 @@ const Author = () => {
 
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
-                  <AuthorItems />
+                  {error ? (
+                    <div className="text-center">
+                      <p>Failed to load author data.</p>
+                    </div>
+                  ) : (
+                    <AuthorItems
+                      items={items}
+                      loading={loading}
+                      hasId={Boolean(id)}
+                    />
+                  )}
                 </div>
               </div>
             </div>

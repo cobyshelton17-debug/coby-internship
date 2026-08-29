@@ -48,7 +48,7 @@ const TopSellers = () => {
                   <li key={seller.id}>
                     <div className="author_list_pp">
                       <Link
-                        to="/author"
+                        to={`/author/${seller.authorId}`}
                         state={{ authorId: seller.authorId }}
                       >
                         <img
@@ -61,7 +61,7 @@ const TopSellers = () => {
                     </div>
                     <div className="author_list_info">
                       <Link
-                        to="/author"
+                        to={`/author/${seller.authorId}`}
                         state={{ authorId: seller.authorId }}
                       >
                         {seller.authorName}
