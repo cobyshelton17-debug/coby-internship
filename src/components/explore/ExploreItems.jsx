@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Countdown from "../UI/Countdown";
+import LikeButton from "../UI/LikeButton";
 import Skeleton from "../UI/Skeleton";
 
 const PAGE_SIZE = 8;
@@ -137,10 +138,7 @@ const ExploreItems = () => {
                 <div className="nft__item_price">
                   {item.price.toFixed(2)} ETH
                 </div>
-                <div className="nft__item_like">
-                  <i className="fa fa-heart"></i>
-                  <span>{item.likes}</span>
-                </div>
+                <LikeButton likes={item.likes} />
               </div>
             </div>
           </div>

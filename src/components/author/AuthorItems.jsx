@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LikeButton from "../UI/LikeButton";
 import Skeleton from "../UI/Skeleton";
 
 const AuthorItems = ({ items = [], loading = false, hasId = false }) => {
@@ -90,10 +91,7 @@ const AuthorItems = ({ items = [], loading = false, hasId = false }) => {
                     <div className="nft__item_price">
                       {item.price.toFixed(2)} ETH
                     </div>
-                    <div className="nft__item_like">
-                      <i className="fa fa-heart"></i>
-                      <span>{item.likes}</span>
-                    </div>
+                    <LikeButton likes={item.likes} />
                   </div>
                 </div>
               </div>
