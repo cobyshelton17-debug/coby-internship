@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorImage from "../images/author_thumbnail.jpg";
@@ -14,30 +14,32 @@ const Author = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [followed, setFollowed] = useState(false);
 
   const id = authorId || location.state?.authorId;
+
+  useEffect(() => {
+    setFollowed(false);
+  }, [id]);
 
   useEffect(() => {
     if (!id) {
       setLoading(false);
       return;
     }
-    Promise.all([
-      axios.get(
-        "https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers"
-      ),
-      axios.get(
-        "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems"
-      ),
-    ])
-      .then(([sellersRes, itemsRes]) => {
-        const sellers = sellersRes.data || [];
-        const allItems = itemsRes.data || [];
-        const found = sellers.find((s) => String(s.authorId) === String(id));
-        setAuthor(
-          found || { authorId: id, authorName: "Monica Lucas", authorImage: AuthorImage }
+    axios
+      .get(
+        `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`
+      )
+      .then((res) => {
+        const data = res.data;
+        setAuthor(data);
+        setItems(
+          (data.nftCollection || []).map((item) => ({
+            ...item,
+            authorImage: data.authorImage,
+          }))
         );
-        setItems(allItems.filter((i) => String(i.authorId) === String(id)));
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
@@ -46,7 +48,12 @@ const Author = () => {
   const displayAuthor = author || {
     authorName: "Monica Lucas",
     authorImage: AuthorImage,
+    tag: "monicaaaa",
+    address: "UDHUHWudhwd78wdt7edb32uidbwyuidhg7wUHIFUHWewiqdj87dy7",
+    followers: 573,
   };
+
+  const followerCount = displayAuthor.followers + (followed ? 1 : 0);
 
   return (
     <div id="wrapper">
@@ -89,9 +96,11 @@ const Author = () => {
                           ) : (
                             displayAuthor.authorName
                           )}
-                          <span className="profile_username">@monicaaaa</span>
+                          <span className="profile_username">
+                            @{displayAuthor.tag}
+                          </span>
                           <span id="wallet" className="profile_wallet">
-                            UDHUHWudhwd78wdt7edb32uidbwyuidhg7wUHIFUHWewiqdj87dy7
+                            {displayAuthor.address}
                           </span>
                           <button id="btn_copy" title="Copy Text">
                             Copy
@@ -102,10 +111,16 @@ const Author = () => {
                   </div>
                   <div className="profile_follow de-flex">
                     <div className="de-flex-col">
-                      <div className="profile_follower">573 followers</div>
-                      <Link to="#" className="btn-main">
-                        Follow
-                      </Link>
+                      <div className="profile_follower">
+                        {followerCount} followers
+                      </div>
+                      <button
+                        className="btn-main"
+                        style={{ minWidth: 130 }}
+                        onClick={() => setFollowed((f) => !f)}
+                      >
+                        {followed ? "Unfollow" : "Follow"}
+                      </button>
                     </div>
                   </div>
                 </div>
