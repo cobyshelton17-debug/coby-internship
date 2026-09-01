@@ -84,7 +84,7 @@ const ExploreItems = () => {
 
       {!loading &&
         !error &&
-        visibleItems.map((item) => (
+        visibleItems.map((item, index) => (
           <div
             key={item.id}
             className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
@@ -130,6 +130,7 @@ const ExploreItems = () => {
                     className="lazy nft__item_preview"
                     alt=""
                     data-aos="fade-in"
+                    data-aos-duration={index < 4 ? 2000 : 1000}
                   />
                 </Link>
               </div>
