@@ -48,9 +48,14 @@ const NewItems = () => {
                   "(max-width: 576px)": { slides: { perView: 1, spacing: 10 } },
                 }}
               >
-                {items.map((item) => {
+                {items.map((item, index) => {
                   return (
-                    <div className="nft__item" key={item.id}>
+                    <div
+                      className="nft__item"
+                      key={item.id}
+                      data-aos="fade-up"
+                      data-aos-delay={index * 100}
+                    >
                       <div className="author_list_pp">
                         <Link
                           to={`/author/${item.authorId}`}

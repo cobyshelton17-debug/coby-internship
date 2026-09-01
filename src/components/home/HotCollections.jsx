@@ -46,8 +46,13 @@ const HotCollections = () => {
                   "(max-width: 576px)": { slides: { perView: 1, spacing: 10 } },
                 }}
               >
-                {collections.map((collection) => (
-                  <div className="nft_coll" key={collection.id}>
+                {collections.map((collection, index) => (
+                  <div
+                    className="nft_coll"
+                    key={collection.id}
+                    data-aos="fade-up"
+                    data-aos-delay={index * 100}
+                  >
                     <div className="nft_wrap">
                       <Link
                         to={`/item-details/${collection.nftId}`}
