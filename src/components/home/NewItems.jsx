@@ -46,6 +46,8 @@ const NewItems = () => {
             <div className="col-lg-12">
               <Carousel
                 perView={4}
+                showArrows
+                showDots={false}
                 breakpoints={{
                   "(max-width: 992px)": { slides: { perView: 2, spacing: 15 } },
                   "(max-width: 576px)": { slides: { perView: 1, spacing: 10 } },
