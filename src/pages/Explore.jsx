@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import Banner from "../components/UI/Banner";
 import ExploreItems from "../components/explore/ExploreItems";
+import scrollToTop from "../utils/scrollToTop";
 
 const Explore = () => {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTop();
   }, []);
 
   return (

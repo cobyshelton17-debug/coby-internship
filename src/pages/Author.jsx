@@ -6,6 +6,7 @@ import AuthorBanner from "../images/author_banner.jpg";
 import AuthorImage from "../images/author_thumbnail.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 import Skeleton from "../components/UI/Skeleton";
+import scrollToTop from "../utils/scrollToTop";
 
 const Author = () => {
   const { authorId } = useParams();
@@ -20,7 +21,7 @@ const Author = () => {
   const id = authorId || location.state?.authorId;
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTop();
   }, [id]);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const Author = () => {
       .catch(() => setError(true))
       .finally(() => {
         setLoading(false);
-        window.scrollTo(0, 0);
+        scrollToTop();
       });
   }, [id]);
 

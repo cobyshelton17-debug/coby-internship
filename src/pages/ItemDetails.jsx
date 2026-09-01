@@ -4,6 +4,7 @@ import axios from "axios";
 import AOS from "aos";
 import EthImage from "../images/ethereum.svg";
 import Skeleton from "../components/UI/Skeleton";
+import scrollToTop from "../utils/scrollToTop";
 
 const ItemDetails = () => {
   const { nftId } = useParams();
@@ -13,7 +14,7 @@ const ItemDetails = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTop();
   }, []);
 
   useEffect(() => {
