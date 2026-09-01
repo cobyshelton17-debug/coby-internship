@@ -1,8 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
+AOS.init({ duration: 1000, once: true });
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Carousel from "../UI/Carousel";
 import Skeleton from "../UI/Skeleton";
 
@@ -17,12 +18,18 @@ const HotCollections = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
+
   return (
     <section id="section-collections" className="no-bottom">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h2>Hot Collections</h2>
               <div className="small-border bg-color-2"></div>
             </div>
@@ -42,8 +49,13 @@ const HotCollections = () => {
                   "(max-width: 576px)": { slides: { perView: 1, spacing: 10 } },
                 }}
               >
-                {collections.map((collection) => (
-                  <div className="nft_coll" key={collection.id}>
+                {collections.map((collection, index) => (
+                  <div
+                    className="nft_coll"
+                    key={collection.id}
+                    data-aos="fade-up"
+                    data-aos-delay={index * 100}
+                  >
                     <div className="nft_wrap">
                       <Link
                         to={`/item-details/${collection.nftId}`}

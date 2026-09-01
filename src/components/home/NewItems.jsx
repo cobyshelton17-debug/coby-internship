@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Carousel from "../UI/Carousel";
 import Countdown from "../UI/Countdown";
 import LikeButton from "../UI/LikeButton";
@@ -19,12 +20,18 @@ const NewItems = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
+
   return (
     <section id="section-items" className="no-bottom">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h2>New Items</h2>
               <div className="small-border bg-color-2"></div>
             </div>
@@ -44,9 +51,14 @@ const NewItems = () => {
                   "(max-width: 576px)": { slides: { perView: 1, spacing: 10 } },
                 }}
               >
-                {items.map((item) => {
+                {items.map((item, index) => {
                   return (
-                    <div className="nft__item" key={item.id}>
+                    <div
+                      className="nft__item"
+                      key={item.id}
+                      data-aos="fade-up"
+                      data-aos-delay={index * 100}
+                    >
                       <div className="author_list_pp">
                         <Link
                           to={`/author/${item.authorId}`}

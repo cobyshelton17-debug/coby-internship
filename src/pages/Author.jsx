@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorImage from "../images/author_thumbnail.jpg";
 import AuthorItems from "../components/author/AuthorItems";
 import Skeleton from "../components/UI/Skeleton";
+import scrollToTop from "../utils/scrollToTop";
 
 const Author = () => {
   const { authorId } = useParams();
@@ -17,6 +19,10 @@ const Author = () => {
   const [followed, setFollowed] = useState(false);
 
   const id = authorId || location.state?.authorId;
+
+  useEffect(() => {
+    scrollToTop();
+  }, [id]);
 
   useEffect(() => {
     setFollowed(false);
@@ -42,8 +48,17 @@ const Author = () => {
         );
       })
       .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        scrollToTop();
+      });
   }, [id]);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   const displayAuthor = author || {
     authorName: "Monica Lucas",

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Skeleton from "../UI/Skeleton";
 
 const TopSellers = () => {
@@ -16,12 +17,18 @@ const TopSellers = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
+
   return (
     <section id="section-popular" className="pb-5">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h2>Top Sellers</h2>
               <div className="small-border bg-color-2"></div>
             </div>
@@ -44,8 +51,12 @@ const TopSellers = () => {
             )}
             {!loading && !error && (
               <ol className="author_list">
-                {sellers.map((seller) => (
-                  <li key={seller.id}>
+                {sellers.map((seller, index) => (
+                  <li
+                    key={seller.id}
+                    data-aos="fade-up"
+                    data-aos-delay={(index % 6) * 50}
+                  >
                     <div className="author_list_pp">
                       <Link
                         to={`/author/${seller.authorId}`}

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import EthImage from "../images/ethereum.svg";
 import Skeleton from "../components/UI/Skeleton";
+import scrollToTop from "../utils/scrollToTop";
 
 const ItemDetails = () => {
   const { nftId } = useParams();
@@ -12,7 +14,7 @@ const ItemDetails = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTop();
   }, []);
 
   useEffect(() => {
@@ -33,6 +35,12 @@ const ItemDetails = () => {
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [nftId]);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   if (loading) {
     return (
@@ -97,6 +105,7 @@ const ItemDetails = () => {
                   src={item.nftImage}
                   className="img-fluid img-rounded mb-sm-30 nft-image"
                   alt={item.title}
+                  data-aos="fade-in"
                 />
               </div>
               <div className="col-md-6">
