@@ -50,9 +50,14 @@ const Author = () => {
       .finally(() => {
         setLoading(false);
         window.scrollTo(0, 0);
-        AOS.refreshHard();
       });
   }, [id]);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   const displayAuthor = author || {
     authorName: "Monica Lucas",

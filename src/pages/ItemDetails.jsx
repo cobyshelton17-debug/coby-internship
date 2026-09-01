@@ -32,11 +32,14 @@ const ItemDetails = () => {
         setItem(res.data);
       })
       .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false);
-        AOS.refreshHard();
-      });
+      .finally(() => setLoading(false));
   }, [nftId]);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   if (loading) {
     return (

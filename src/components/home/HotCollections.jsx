@@ -15,11 +15,14 @@ const HotCollections = () => {
       .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections")
       .then((res) => setCollections(res.data))
       .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false);
-        AOS.refreshHard();
-      });
+      .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   return (
     <section id="section-collections" className="no-bottom">

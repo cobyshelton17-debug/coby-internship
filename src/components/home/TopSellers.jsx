@@ -14,11 +14,14 @@ const TopSellers = () => {
       .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers")
       .then((res) => setSellers(res.data))
       .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false);
-        AOS.refreshHard();
-      });
+      .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   return (
     <section id="section-popular" className="pb-5">

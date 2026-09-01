@@ -31,11 +31,14 @@ const ExploreItems = () => {
         setVisible(PAGE_SIZE);
       })
       .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false);
-        AOS.refreshHard();
-      });
+      .finally(() => setLoading(false));
   }, [filter]);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   const handleFilter = (e) => {
     setFilter(e.target.value);

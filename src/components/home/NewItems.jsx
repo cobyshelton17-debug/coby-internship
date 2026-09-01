@@ -17,11 +17,14 @@ const NewItems = () => {
       .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems")
       .then((res) => setItems(res.data))
       .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false);
-        AOS.refreshHard();
-      });
+      .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      AOS.refreshHard();
+    }
+  }, [loading]);
 
   return (
     <section id="section-items" className="no-bottom">
