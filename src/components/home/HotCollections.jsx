@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Carousel from "../UI/Carousel";
 import Skeleton from "../UI/Skeleton";
 
@@ -14,7 +15,10 @@ const HotCollections = () => {
       .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections")
       .then((res) => setCollections(res.data))
       .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        AOS.refresh();
+      });
   }, []);
 
   return (
@@ -22,7 +26,7 @@ const HotCollections = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h2>Hot Collections</h2>
               <div className="small-border bg-color-2"></div>
             </div>

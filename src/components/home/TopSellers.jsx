@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Skeleton from "../UI/Skeleton";
 
 const TopSellers = () => {
@@ -13,7 +14,10 @@ const TopSellers = () => {
       .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers")
       .then((res) => setSellers(res.data))
       .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        AOS.refresh();
+      });
   }, []);
 
   return (
@@ -21,7 +25,7 @@ const TopSellers = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h2>Top Sellers</h2>
               <div className="small-border bg-color-2"></div>
             </div>

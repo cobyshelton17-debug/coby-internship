@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Countdown from "../UI/Countdown";
 import LikeButton from "../UI/LikeButton";
 import Skeleton from "../UI/Skeleton";
@@ -30,7 +31,10 @@ const ExploreItems = () => {
         setVisible(PAGE_SIZE);
       })
       .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        AOS.refresh();
+      });
   }, [filter]);
 
   const handleFilter = (e) => {
@@ -125,6 +129,7 @@ const ExploreItems = () => {
                     src={item.nftImage}
                     className="lazy nft__item_preview"
                     alt=""
+                    data-aos="fade-in"
                   />
                 </Link>
               </div>

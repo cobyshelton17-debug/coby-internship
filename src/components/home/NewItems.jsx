@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import Carousel from "../UI/Carousel";
 import Countdown from "../UI/Countdown";
 import LikeButton from "../UI/LikeButton";
@@ -16,7 +17,10 @@ const NewItems = () => {
       .get("https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems")
       .then((res) => setItems(res.data))
       .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        AOS.refresh();
+      });
   }, []);
 
   return (
@@ -24,7 +28,7 @@ const NewItems = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div className="text-center" data-aos="fade-up">
               <h2>New Items</h2>
               <div className="small-border bg-color-2"></div>
             </div>

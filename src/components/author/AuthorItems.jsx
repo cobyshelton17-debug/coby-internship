@@ -78,6 +78,7 @@ const AuthorItems = ({ items = [], loading = false, hasId = false }) => {
                         src={item.nftImage}
                         className="lazy nft__item_preview"
                         alt=""
+                        data-aos="fade-in"
                       />
                     </Link>
                   </div>

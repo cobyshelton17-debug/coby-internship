@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import EthImage from "../images/ethereum.svg";
 import Skeleton from "../components/UI/Skeleton";
 
@@ -31,7 +32,10 @@ const ItemDetails = () => {
         setItem(res.data);
       })
       .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        AOS.refresh();
+      });
   }, [nftId]);
 
   if (loading) {
@@ -97,6 +101,7 @@ const ItemDetails = () => {
                   src={item.nftImage}
                   className="img-fluid img-rounded mb-sm-30 nft-image"
                   alt={item.title}
+                  data-aos="fade-in"
                 />
               </div>
               <div className="col-md-6">
