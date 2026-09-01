@@ -39,7 +39,7 @@ const AuthorItems = ({ items = [], loading = false, hasId = false }) => {
           )}
 
           {!loading &&
-            items.map((item) => (
+            items.map((item, index) => (
               <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={item.id}>
                 <div className="nft__item">
                   <div className="author_list_pp">
@@ -79,6 +79,7 @@ const AuthorItems = ({ items = [], loading = false, hasId = false }) => {
                         className="lazy nft__item_preview"
                         alt=""
                         data-aos="fade-in"
+                        data-aos-duration={index < 4 ? 2000 : 1000}
                       />
                     </Link>
                   </div>
