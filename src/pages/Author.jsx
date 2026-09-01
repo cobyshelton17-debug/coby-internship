@@ -49,7 +49,8 @@ const Author = () => {
       .catch(() => setError(true))
       .finally(() => {
         setLoading(false);
-        AOS.refresh();
+        window.scrollTo(0, 0);
+        AOS.refreshHard();
       });
   }, [id]);
 

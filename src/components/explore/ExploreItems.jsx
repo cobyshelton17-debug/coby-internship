@@ -33,7 +33,7 @@ const ExploreItems = () => {
       .catch(() => setError(true))
       .finally(() => {
         setLoading(false);
-        AOS.refresh();
+        AOS.refreshHard();
       });
   }, [filter]);
 
@@ -155,7 +155,10 @@ const ExploreItems = () => {
           <button
             id="loadmore"
             className="btn-main lead"
-            onClick={() => setVisible((v) => v + 4)}
+            onClick={() => {
+              setVisible((v) => v + 4);
+              AOS.refreshHard();
+            }}
           >
             Load more
           </button>

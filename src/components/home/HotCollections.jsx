@@ -17,7 +17,7 @@ const HotCollections = () => {
       .catch(() => setError(true))
       .finally(() => {
         setLoading(false);
-        AOS.refresh();
+        AOS.refreshHard();
       });
   }, []);
 

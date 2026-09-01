@@ -10,12 +10,12 @@ import Author from "./pages/Author";
 import ItemDetails from "./pages/ItemDetails";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 

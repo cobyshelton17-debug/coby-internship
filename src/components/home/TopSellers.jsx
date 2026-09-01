@@ -16,7 +16,7 @@ const TopSellers = () => {
       .catch(() => setError(true))
       .finally(() => {
         setLoading(false);
-        AOS.refresh();
+        AOS.refreshHard();
       });
   }, []);
 
