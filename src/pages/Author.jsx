@@ -20,6 +20,10 @@ const Author = () => {
   const id = authorId || location.state?.authorId;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  useEffect(() => {
     setFollowed(false);
   }, [id]);
 
